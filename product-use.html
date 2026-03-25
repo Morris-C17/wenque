@@ -1,0 +1,1364 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品在线使用 - 徐州文雀科技有限公司</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F62FE',
+                        secondary: '#25C2A0',
+                        accent: '#FF6B00',
+                        dark: '#0A1128',
+                        light: '#F8FAFC',
+                        'tech-gray': '#E2E8F0',
+                        'tech-blue': '#023373'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'shine': 'shine 3s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(15, 98, 254, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(15, 98, 254, 0.8)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+            }
+            .card-3d {
+                transform-style: preserve-3d;
+                transition: all 0.5s ease;
+            }
+            .clip-path-slant {
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* 导航栏滚动效果 */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+        
+        /* 滚动进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: linear-gradient(to right, #0F62FE, #25C2A0);
+            width: 0%;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0A1128;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loader-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .loader-icon {
+            width: 60px;
+            height: 60px;
+            color: #0F62FE;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 科技感装饰元素 */
+        .tech-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(15, 98, 254, 0.1);
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .tech-line {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(15, 98, 254, 0) 0%, rgba(15, 98, 254, 0.2) 50%, rgba(15, 98, 254, 0) 100%);
+            transform-origin: left center;
+        }
+
+        /* 科技感logo样式 */
+        .logo-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* 滚动动画元素 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 产品界面样式 */
+        .product-interface {
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .product-interface:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .interface-header {
+            background-color: #0A1128;
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .interface-tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .interface-tab.active {
+            border-bottom: 2px solid #0F62FE;
+            color: #0F62FE;
+        }
+        
+        .feature-point {
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-point:hover {
+            transform: translateX(5px);
+        }
+        
+        /* 子标签样式 */
+        .sub-tab {
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .sub-tab.active {
+            background-color: #0F62FE;
+            color: white;
+        }
+        
+        /* 登录模态框样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="font-roboto text-dark bg-light overflow-x-hidden">
+    <!-- 登录/注册模态框 -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="text-center mb-6">
+                <h3 class="text-xl font-bold">账户登录</h3>
+                <p class="text-dark/60 text-sm">请登录后使用参数优化功能</p>
+            </div>
+            
+            <div class="mb-4">
+                <input type="text" placeholder="用户名/邮箱" class="w-full px-4 py-2 border border-tech-gray rounded-lg focus:outline-none focus:border-primary">
+            </div>
+            
+            <div class="mb-6">
+                <input type="password" placeholder="密码" class="w-full px-4 py-2 border border-tech-gray rounded-lg focus:outline-none focus:border-primary">
+            </div>
+            
+            <div class="flex justify-between mb-6">
+                <label class="flex items-center text-sm">
+                    <input type="checkbox" class="mr-2">
+                    记住我
+                </label>
+                <a href="#" class="text-sm text-primary hover:underline">忘记密码？</a>
+            </div>
+            
+            <button id="login-btn" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-colors mb-4">
+                登录
+            </button>
+            
+            <div class="text-center text-sm text-dark/60">
+                还没有账户？ <a href="#" class="text-primary hover:underline">立即注册</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 滚动进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <!-- 页面加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">
+            <div class="loader-icon">
+                <!-- 科技感几何logo -->
+                <svg class="logo-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center group">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mr-3 group-hover:animate-glow transition-all duration-300">
+                            <!-- 科技感几何logo -->
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient group-hover:opacity-90 transition-opacity">文雀科技</span>
+                    </a>
+                </div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">首页</a>
+                    <a href="solutions (13).html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">解决方案</a>
+                    <a href="product-use.html" class="text-primary font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-primary">在线使用</a>
+                    <a href="contact (2).html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">联系我们</a>
+                </nav>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-dark hover:text-primary focus:outline-none transition-colors">
+                        <i class="fa fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-tech-gray/20 shadow-lg">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">首页</a>
+                <a href="solutions (13).html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">解决方案</a>
+                <a href="product-use.html" class="block py-3 text-primary font-medium">在线使用</a>
+                <a href="contact (2).html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="pt-20">
+        <!-- 页面标题 -->
+        <section class="relative py-24 overflow-hidden bg-gradient-to-br from-dark to-tech-blue clip-path-slant">
+            <!-- 粒子背景容器 -->
+            <div id="particles-js"></div>
+            
+            <!-- 装饰元素 -->
+            <div class="tech-dot w-64 h-64 top-1/4 -left-32"></div>
+            <div class="tech-dot w-32 h-32 bottom-1/4 right-1/4" style="animation-delay: 2s;"></div>
+            <div class="tech-dot w-16 h-16 top-1/2 right-1/3" style="animation-delay: 4s;"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-6 text-white text-shadow reveal">
+                    产品在线使用
+                </h1>
+                <p class="text-white/80 max-w-2xl mx-auto text-lg md:text-xl mb-10 reveal" style="transition-delay: 150ms;">
+                    体验我们的智能加工解决方案，感受高效便捷的数控程序验证与优化流程
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="transition-delay: 300ms;">
+                    <a href="#product-demo" class="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-lg transition-all shadow-lg hover:shadow-primary/30 hover:shadow-xl">
+                        开始体验
+                    </a>
+                    <a href="#guide" class="bg-white/10 hover:bg-white/20 text-white font-medium px-8 py-3 rounded-lg transition-all border border-white/30">
+                        查看使用指南
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 产品在线演示区 -->
+        <section id="product-demo" class="py-20 bg-light">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">NC程序智能验证系统</h2>
+                    <p class="text-dark/70 max-w-2xl mx-auto text-lg">在线体验我们的核心产品功能，感受智能加工带来的效率提升</p>
+                </div>
+                
+                <div class="product-interface mb-12 reveal" style="transition-delay: 100ms;">
+                    <div class="interface-header">
+                        <div class="flex space-x-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="ml-4">NCProgramVerifier v2.5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 border-b border-tech-gray">
+                        <div class="flex overflow-x-auto">
+                            <div class="interface-tab active" id="optimize-tab">参数优化</div>
+                            <div class="interface-tab" id="verify-tab">程序验证</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 参数优化标签内容（包含原参数优化、报告生成和历史记录） -->
+                    <div class="bg-gray-50 p-6 min-h-[500px]" id="optimize-content">
+                        <!-- 子标签导航 -->
+                        <div class="flex flex-wrap gap-2 mb-6 border-b border-tech-gray/30 pb-3">
+                            <div class="sub-tab active" id="optimize-main">优化设置</div>
+                            <div class="sub-tab" id="report-generate">报告生成</div>
+                            <div class="sub-tab" id="history-records">历史记录</div>
+                        </div>
+                        
+                        <!-- 优化设置内容 -->
+                        <div id="optimize-main-content">
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="space-y-6">
+                                    <div class="bg-white p-5 rounded-lg shadow-sm border border-tech-gray optimizer-card">
+                                        <h3 class="font-semibold mb-4 flex items-center">
+                                            <i class="fa fa-sliders text-primary mr-2"></i>
+                                            优化参数设置
+                                        </h3>
+                                        
+                                        <div class="mb-5">
+                                            <h4 class="text-sm font-medium mb-3">基本信息</h4>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <label class="text-xs text-dark/60 block mb-1">程序名称</label>
+                                                    <input type="text" value="mill_part_v2.nc" class="w-full px-3 py-2 text-sm border border-tech-gray rounded">
+                                                </div>
+                                                <div>
+                                                    <label class="text-xs text-dark/60 block mb-1">材料类型</label>
+                                                    <select class="w-full px-3 py-2 text-sm border border-tech-gray rounded">
+                                                        <option>45#钢</option>
+                                                        <option>铝合金</option>
+                                                        <option>不锈钢</option>
+                                                        <option>铸铁</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="text-xs text-dark/60 block mb-1">刀具型号</label>
+                                                    <input type="text" value=" carbide end mill Φ10" class="w-full px-3 py-2 text-sm border border-tech-gray rounded">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-5">
+                                            <div>
+                                                <div class="flex justify-between mb-1">
+                                                    <label class="text-sm font-medium">加工速度</label>
+                                                    <span class="text-sm text-primary">70%</span>
+                                                </div>
+                                                <input type="range" min="0" max="100" value="70" class="param-slider">
+                                                <div class="flex justify-between text-xs text-dark/50">
+                                                    <span>低速</span>
+                                                    <span>高速</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button id="optimize-btn" class="w-full mt-6 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                            执行优化
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <div class="bg-white p-5 rounded-lg shadow-sm border border-tech-gray h-full flex flex-col optimizer-card">
+                                        <h3 class="font-semibold mb-4 flex items-center">
+                                            <i class="fa fa-line-chart text-primary mr-2"></i>
+                                            优化结果分析
+                                        </h3>
+                                        
+                                        <div class="flex-grow overflow-auto">
+                                            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                                    <div class="text-3xl font-bold text-primary mb-1">18.2%</div>
+                                                    <div class="text-sm text-dark/70">加工时间减少</div>
+                                                </div>
+                                                <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                                                    <div class="text-3xl font-bold text-secondary mb-1">12.5%</div>
+                                                    <div class="text-sm text-dark/70">刀具寿命延长</div>
+                                                </div>
+                                                <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                                                    <div class="text-3xl font-bold text-purple-500 mb-1">8.3%</div>
+                                                    <div class="text-sm text-dark/70">能耗降低</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-6">
+                                                <h4 class="font-medium mb-3">优化信息</h4>
+                                                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                                    <div class="bg-gray-50 p-3 rounded border border-tech-gray/30">
+                                                        <div class="text-xs text-dark/60 mb-1">优化时间</div>
+                                                        <div class="font-medium">2023-06-15 14:30:22</div>
+                                                    </div>
+                                                    <div class="bg-gray-50 p-3 rounded border border-tech-gray/30">
+                                                        <div class="text-xs text-dark/60 mb-1">优化时长</div>
+                                                        <div class="font-medium">45秒</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <h4 class="font-medium mb-3">参数对比</h4>
+                                                <div class="overflow-x-auto">
+                                                    <table class="min-w-full bg-white border border-tech-gray/30 rounded-lg">
+                                                        <thead>
+                                                            <tr class="bg-gray-50">
+                                                                <th class="py-2 px-4 text-left text-sm font-medium border-b">参数类型</th>
+                                                                <th class="py-2 px-4 text-left text-sm font-medium border-b">优化前</th>
+                                                                <th class="py-2 px-4 text-left text-sm font-medium border-b">优化后</th>
+                                                                <th class="py-2 px-4 text-left text-sm font-medium border-b">变化率</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="py-2 px-4 border-b">主轴转速</td>
+                                                                <td class="py-2 px-4 border-b">3000 RPM</td>
+                                                                <td class="py-2 px-4 border-b">3800 RPM</td>
+                                                                <td class="py-2 px-4 border-b text-green-500">+26.7%</td>
+                                                            </tr>
+                                                            <tr class="bg-gray-50">
+                                                                <td class="py-2 px-4 border-b">进给速度</td>
+                                                                <td class="py-2 px-4 border-b">150 mm/min</td>
+                                                                <td class="py-2 px-4 border-b">185 mm/min</td>
+                                                                <td class="py-2 px-4 border-b text-green-500">+23.3%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2 px-4 border-b">切削深度</td>
+                                                                <td class="py-2 px-4 border-b">2.5 mm</td>
+                                                                <td class="py-2 px-4 border-b">2.2 mm</td>
+                                                                <td class="py-2 px-4 border-b text-red-500">-12.0%</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-6">
+                                                <h4 class="font-medium mb-3">优化建议</h4>
+                                                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                                                    <ul class="space-y-2 text-sm">
+                                                        <li class="flex items-start">
+                                                            <i class="fa fa-lightbulb-o text-yellow-500 mt-1 mr-2"></i>
+                                                            <span>建议在加工至深度15mm处增加一次退刀动作，清除切屑</span>
+                                                        </li>
+                                                        <li class="flex items-start">
+                                                            <i class="fa fa-lightbulb-o text-yellow-500 mt-1 mr-2"></i>
+                                                            <span>拐角处进给速度可降低15%，提高表面光洁度</span>
+                                                        </li>
+                                                        <li class="flex items-start">
+                                                            <i class="fa fa-lightbulb-o text-yellow-500 mt-1 mr-2"></i>
+                                                            <span>加工最后0.5mm时建议使用精铣参数，提高尺寸精度</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex justify-end space-x-3">
+                                                <button class="px-4 py-2 border border-tech-gray/30 rounded hover:bg-gray-100 transition-colors">
+                                                    <i class="fa fa-download mr-1"></i> 导出优化参数
+                                                </button>
+                                                <button class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
+                                                    <i class="fa fa-file-text-o mr-1"></i> 导出报告
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 报告生成内容 -->
+                        <div id="report-generate-content" class="hidden">
+                            <div class="bg-white p-6 rounded-lg shadow-sm border border-tech-gray">
+                                <h3 class="font-semibold mb-4 flex items-center">
+                                    <i class="fa fa-file-text-o text-primary mr-2"></i>
+                                    报告生成
+                                </h3>
+                                
+                                <div class="space-y-6">
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <div>
+                                            <h4 class="font-medium mb-3">报告内容设置</h4>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" id="include-optimization" class="mr-2" checked="">
+                                                    <label for="include-optimization">包含优化参数对比</label>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" id="include-validation" class="mr-2" checked="">
+                                                    <label for="include-validation">包含程序验证结果</label>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" id="include-graphs" class="mr-2" checked="">
+                                                    <label for="include-graphs">包含性能分析图表</label>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" id="include-simulation" class="mr-2">
+                                                    <label for="include-simulation">包含加工截图</label>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-6">
+                                                <h4 class="font-medium mb-3">导出格式</h4>
+                                                <div class="grid grid-cols-3 gap-3">
+                                                    <div class="border border-tech-gray rounded-lg p-3 text-center cursor-pointer hover:border-primary transition-colors">
+                                                        <i class="fa fa-file-pdf-o text-xl mb-1"></i>
+                                                        <div class="text-sm">PDF</div>
+                                                    </div>
+                                                    <div class="border border-tech-gray rounded-lg p-3 text-center cursor-pointer hover:border-primary transition-colors">
+                                                        <i class="fa fa-file-excel-o text-xl mb-1"></i>
+                                                        <div class="text-sm">Excel</div>
+                                                    </div>
+                                                    <div class="border border-tech-gray rounded-lg p-3 text-center cursor-pointer hover:border-primary transition-colors">
+                                                        <i class="fa fa-file-word-o text-xl mb-1"></i>
+                                                        <div class="text-sm">Word</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 class="font-medium mb-3">报告预览</h4>
+                                            <div class="border border-tech-gray rounded-lg overflow-hidden h-64 bg-gray-50 relative">
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <div class="text-center">
+                                                        <i class="fa fa-file-text-o text-4xl text-tech-gray/30 mb-3"></i>
+                                                        <p class="text-dark/60">报告预览区域</p>
+                                                        <p class="text-sm text-dark/40 mt-1">设置完成后可在此处预览报告内容</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4 flex justify-end">
+                                                <button class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors">
+                                                    <i class="fa fa-download mr-1"></i> 生成并下载报告
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 历史记录内容 -->
+                        <div id="history-records-content" class="hidden">
+                            <div class="bg-white p-6 rounded-lg shadow-sm border border-tech-gray">
+                                <h3 class="font-semibold mb-4 flex items-center">
+                                    <i class="fa fa-history text-primary mr-2"></i>
+                                    历史记录
+                                </h3>
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full bg-white border border-tech-gray/30 rounded-lg">
+                                        <thead>
+                                            <tr class="bg-gray-50">
+                                                <th class="py-3 px-4 text-left text-sm font-medium border-b">程序名称</th>
+                                                <th class="py-3 px-4 text-left text-sm font-medium border-b">操作类型</th>
+                                                <th class="py-3 px-4 text-left text-sm font-medium border-b">操作时间</th>
+                                                <th class="py-3 px-4 text-left text-sm font-medium border-b">处理时长</th>
+                                                <th class="py-3 px-4 text-left text-sm font-medium border-b">状态</th>
+                                                <th class="py-3 px-4 text-left text-sm font-medium border-b">操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="py-3 px-4 border-b">mill_part_v2.nc</td>
+                                                <td class="py-3 px-4 border-b">参数优化</td>
+                                                <td class="py-3 px-4 border-b">2023-06-15 14:30:22</td>
+                                                <td class="py-3 px-4 border-b">45秒</td>
+                                                <td class="py-3 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">完成</span></td>
+                                                <td class="py-3 px-4 border-b">
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-primary hover:text-primary/80"><i class="fa fa-eye"></i></button>
+                                                        <button class="text-secondary hover:text-secondary/80"><i class="fa fa-download"></i></button>
+                                                        <button class="text-accent hover:text-accent/80"><i class="fa fa-repeat"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="py-3 px-4 border-b">turning_op.nc</td>
+                                                <td class="py-3 px-4 border-b">程序验证</td>
+                                                <td class="py-3 px-4 border-b">2023-06-14 09:15:37</td>
+                                                <td class="py-3 px-4 border-b">22秒</td>
+                                                <td class="py-3 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">完成</span></td>
+                                                <td class="py-3 px-4 border-b">
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-primary hover:text-primary/80"><i class="fa fa-eye"></i></button>
+                                                        <button class="text-secondary hover:text-secondary/80"><i class="fa fa-download"></i></button>
+                                                        <button class="text-accent hover:text-accent/80"><i class="fa fa-repeat"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-3 px-4 border-b">drilling_seq.nc</td>
+                                                <td class="py-3 px-4 border-b">参数优化</td>
+                                                <td class="py-3 px-4 border-b">2023-06-13 16:42:11</td>
+                                                <td class="py-3 px-4 border-b">38秒</td>
+                                                <td class="py-3 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">完成</span></td>
+                                                <td class="py-3 px-4 border-b">
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-primary hover:text-primary/80"><i class="fa fa-eye"></i></button>
+                                                        <button class="text-secondary hover:text-secondary/80"><i class="fa fa-download"></i></button>
+                                                        <button class="text-accent hover:text-accent/80"><i class="fa fa-repeat"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="py-3 px-4 border-b">milling_complex.nc</td>
+                                                <td class="py-3 px-4 border-b">程序验证</td>
+                                                <td class="py-3 px-4 border-b">2023-06-12 11:05:59</td>
+                                                <td class="py-3 px-4 border-b">56秒</td>
+                                                <td class="py-3 px-4 border-b"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">需注意</span></td>
+                                                <td class="py-3 px-4 border-b">
+                                                    <div class="flex space-x-2">
+                                                        <button class="text-primary hover:text-primary/80"><i class="fa fa-eye"></i></button>
+                                                        <button class="text-secondary hover:text-secondary/80"><i class="fa fa-download"></i></button>
+                                                        <button class="text-accent hover:text-accent/80"><i class="fa fa-repeat"></i></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-4 flex justify-between items-center">
+                                    <div class="text-sm text-dark/60">显示 1-4 条，共 28 条记录</div>
+                                    <div class="flex space-x-1">
+                                        <button class="w-8 h-8 flex items-center justify-center border border-tech-gray rounded hover:border-primary disabled:opacity-50" disabled="">
+                                            <i class="fa fa-chevron-left text-xs"></i>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary text-white rounded">1</button>
+                                        <button class="w-8 h-8 flex items-center justify-center border border-tech-gray rounded hover:border-primary">2</button>
+                                        <button class="w-8 h-8 flex items-center justify-center border border-tech-gray rounded hover:border-primary">3</button>
+                                        <button class="w-8 h-8 flex items-center justify-center border border-tech-gray rounded hover:border-primary">
+                                            <i class="fa fa-chevron-right text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 程序验证标签内容 -->
+                    <div class="bg-gray-50 p-6 min-h-[500px] hidden" id="verify-content">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-tech-gray">
+                                <h3 class="font-semibold mb-3 flex items-center">
+                                    <i class="fa fa-file-code-o text-primary mr-2"></i>
+                                    程序上传
+                                </h3>
+                                <div class="border-2 border-dashed border-tech-gray/50 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer">
+                                    <i class="fa fa-cloud-upload text-4xl text-tech-gray/50 mb-3"></i>
+                                    <p class="text-dark/60">拖拽NC程序文件到此处或点击上传</p>
+                                    <button class="mt-4 bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg transition-colors">
+                                        选择文件
+                                    </button>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-medium mb-2">示例程序</h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer">
+                                            <span>mill_part.nc</span>
+                                            <i class="fa fa-load text-primary"></i>
+                                        </div>
+                                        <div class="flex items-center justify-between p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer">
+                                            <span>turning_op.nc</span>
+                                            <i class="fa fa-load text-primary"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-tech-gray h-full flex flex-col">
+                                    <h3 class="font-semibold mb-3 flex items-center">
+                                        <i class="fa fa-check-square-o text-primary mr-2"></i>
+                                        验证结果
+                                    </h3>
+                                    <div class="flex-grow overflow-auto p-4 border border-tech-gray/30 rounded-lg bg-gray-50">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div>
+                                                <span class="text-lg font-medium">mill_part.nc</span>
+                                                <span class="ml-2 text-sm bg-green-100 text-green-800 px-2 py-1 rounded">验证通过</span>
+                                            </div>
+                                            <div class="text-sm text-dark/60">
+                                                验证时间: 2023-06-15 14:30:22
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                                            <div class="bg-white p-3 rounded border border-tech-gray/30">
+                                                <h4 class="font-medium text-sm text-dark/70 mb-2">基本信息</h4>
+                                                <div class="space-y-1 text-sm">
+                                                    <div class="flex justify-between">
+                                                        <span class="text-dark/60">程序长度:</span>
+                                                        <span>1,245 行</span>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <span class="text-dark/60">加工时间:</span>
+                                                        <span>12.5 分钟</span>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <span class="text-dark/60">刀具数量:</span>
+                                                        <span>5 把</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bg-white p-3 rounded border border-tech-gray/30">
+                                                <h4 class="font-medium text-sm text-dark/70 mb-2">优化建议</h4>
+                                                <div class="space-y-1 text-sm">
+                                                    <div class="flex items-start">
+                                                        <i class="fa fa-lightbulb-o text-accent mt-1 mr-2"></i>
+                                                        <span>可优化G02/G03指令，预计节省15%时间</span>
+                                                    </div>
+                                                    <div class="flex items-start">
+                                                        <i class="fa fa-lightbulb-o text-accent mt-1 mr-2"></i>
+                                                        <span>建议调整切削参数，提高表面质量</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-white p-3 rounded border border-tech-gray/30 mb-6">
+                                            <h4 class="font-medium text-sm text-dark/70 mb-2">验证详情</h4>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                                                        <span class="text-sm">语法检查</span>
+                                                    </div>
+                                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">通过</span>
+                                                </div>
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                                                        <span class="text-sm">碰撞检测</span>
+                                                    </div>
+                                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">通过</span>
+                                                </div>
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                                                        <span class="text-sm">过切分析</span>
+                                                    </div>
+                                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">通过</span>
+                                                </div>
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <i class="fa fa-exclamation-circle text-yellow-500 mr-2"></i>
+                                                        <span class="text-sm">进给速度合理性</span>
+                                                    </div>
+                                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">需注意</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-4">
+                                            <div class="flex items-start">
+                                                <i class="fa fa-info-circle text-primary mt-1 mr-3 text-lg"></i>
+                                                <div>
+                                                    <h4 class="font-medium mb-1">获取完整解决方案</h4>
+                                                    <p class="text-sm text-dark/70 mb-3">程序验证的完整解决方案和详细分析报告需要联系我们的销售人员获取。</p>
+                                                    <a href="contact.html" class="inline-flex items-center text-primary text-sm font-medium hover:underline">
+                                                        <span>联系销售人员</span>
+                                                        <i class="fa fa-arrow-right ml-1"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex justify-end space-x-3">
+                                            <button class="px-4 py-2 border border-tech-gray/30 rounded hover:bg-gray-100 transition-colors">
+                                                <i class="fa fa-download mr-1"></i> 导出基础报告
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center reveal" style="transition-delay: 200ms;">
+                    <p class="text-dark/70 mb-6">需要完整功能体验？请联系我们获取正式版授权</p>
+                    <a href="contact.html" class="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors group">
+                        <span>联系销售</span>
+                        <i class="fa fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 使用指南 -->
+        <section id="guide" class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">使用指南</h2>
+                    <p class="text-dark/70 max-w-2xl mx-auto text-lg">快速掌握产品使用方法，提升您的工作效率</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="bg-light rounded-2xl p-8 shadow-lg card-3d reveal">
+                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6">
+                            <i class="fa fa-sliders text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">参数优化</h3>
+                        <ol class="space-y-4 text-dark/70">
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</span>
+                                <span>首次使用需注册登录账户</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</span>
+                                <span>填写基本信息并设置加工速度参数</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">3</span>
+                                <span>点击"执行优化"按钮，系统将自动优化切削参数</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">4</span>
+                                <span>查看优化结果、优化时间和专业建议，可导出详细报告</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="bg-light rounded-2xl p-8 shadow-lg card-3d reveal" style="transition-delay: 100ms;">
+                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6">
+                            <i class="fa fa-file-text-o text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">报告生成</h3>
+                        <ol class="space-y-4 text-dark/70">
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</span>
+                                <span>在参数优化标签的"报告生成"子标签中选择需要包含的内容</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</span>
+                                <span>选择导出格式（PDF、Excel或Word）</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">3</span>
+                                <span>点击"生成并下载报告"获取详细的分析文档</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="bg-light rounded-2xl p-8 shadow-lg card-3d reveal" style="transition-delay: 200ms;">
+                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6">
+                            <i class="fa fa-history text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">历史记录</h3>
+                        <ol class="space-y-4 text-dark/70">
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</span>
+                                <span>在参数优化标签的"历史记录"子标签中查看所有操作记录</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</span>
+                                <span>可查看、下载历史报告或重复之前的优化操作</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">3</span>
+                                <span>通过分页导航浏览更多历史记录</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="bg-light rounded-2xl p-8 shadow-lg card-3d reveal" style="transition-delay: 300ms;">
+                        <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6">
+                            <i class="fa fa-check-square-o text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">程序验证</h3>
+                        <ol class="space-y-4 text-dark/70">
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">1</span>
+                                <span>切换到程序验证标签，上传NC程序或选择示例程序</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">2</span>
+                                <span>系统自动进行语法检查、碰撞检测和过切分析等验证</span>
+                            </li>
+                            <li class="flex items-start feature-point">
+                                <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">3</span>
+                                <span>查看基础验证结果，联系销售人员获取完整解决方案</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 常见问题 -->
+        <section class="py-20 bg-light">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">常见问题</h2>
+                    <p class="text-dark/70 max-w-2xl mx-auto text-lg">解答您在使用过程中可能遇到的问题</p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto space-y-6 reveal">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg mb-2 flex items-center">
+                            <i class="fa fa-question-circle text-primary mr-2"></i>
+                            如何注册和登录系统？
+                        </h3>
+                        <p class="text-dark/70">首次使用参数优化功能时，系统会自动弹出登录窗口，您可以点击"立即注册"按钮创建账户。注册成功后，使用用户名/邮箱和密码登录即可使用完整功能。</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg mb-2 flex items-center">
+                            <i class="fa fa-question-circle text-primary mr-2"></i>
+                            程序验证的完整解决方案如何获取？
+                        </h3>
+                        <p class="text-dark/70">程序验证的完整分析报告和解决方案需要联系我们的销售人员获取。您可以在验证结果页面点击"联系销售人员"按钮，或直接通过网站上的联系方式与我们取得联系。</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg mb-2 flex items-center">
+                            <i class="fa fa-question-circle text-primary mr-2"></i>
+                            导出的报告包含哪些内容？
+                        </h3>
+                        <p class="text-dark/70">导出的报告可包含优化前后的参数对比、加工时间分析、刀具寿命评估、优化建议等内容。您可以在报告生成页面选择需要包含的具体内容，并选择PDF、Excel或Word格式进行导出。</p>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-bold text-lg mb-2 flex items-center">
+                            <i class="fa fa-question-circle text-primary mr-2"></i>
+                            如何获取正式版授权？
+                        </h3>
+                        <p class="text-dark/70">您可以通过"联系销售"按钮与我们的销售人员取得联系，我们将根据您的需求提供合适的授权方案。我们提供单机版、网络版和企业版等多种授权方式，满足不同规模企业的需求。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 联系我们 -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto bg-gradient-to-br from-primary/5 to-secondary/5 rounded-2xl p-8 md:p-12 shadow-lg reveal">
+                    <div class="text-center mb-10">
+                        <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold mb-4">需要更多帮助？</h2>
+                        <p class="text-dark/70 max-w-2xl mx-auto">如有任何疑问或需要技术支持，请随时联系我们</p>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <a href="contact.html" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group max-w-sm w-full">
+                            <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                                <i class="fa fa-comments text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-bold mb-2">联系客服</h3>
+                            <p class="text-dark/70 mb-4">获取一对一的技术支持</p>
+                            <span class="text-primary font-medium">立即咨询 <i class="fa fa-arrow-right ml-1 group-hover:ml-2 transition-all"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mr-3">
+                            <!-- 科技感几何logo -->
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold">文雀科技</span>
+                    </div>
+                    <p class="text-white/70 mb-6">专注于为制造企业提供NC程序验证与优化解决方案，助力企业提升生产效率，降低制造成本。</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-white/70 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="company.html" class="text-white/70 hover:text-white transition-colors">公司介绍</a></li>
+                        <li><a href="products.html" class="text-white/70 hover:text-white transition-colors">产品介绍</a></li>
+                        <li><a href="solutions.html" class="text-white/70 hover:text-white transition-colors">解决方案</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">联系信息</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">江苏省徐州市高新技术产业开发区</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-phone text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">17834666572</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-envelope text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">wenquetech@163.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">订阅资讯</h4>
+                    <p class="text-white/70 mb-4">订阅我们的技术资讯，获取最新行业动态和解决方案。</p>
+                    <form class="flex">
+                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark" required="">
+                        <button type="submit" class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 text-center text-white/50 text-sm">
+                <p>© 2025 徐州文雀科技有限公司 版权所有 | 技术研发始于1998年</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏加载动画
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                }, 500);
+            }, 1000);
+            
+            // 粒子背景初始化
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.2,
+                        "random": true
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#0F62FE",
+                        "opacity": 0.1,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.3
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 3
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+            
+            // 导航栏滚动效果
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('nav-scrolled');
+                } else {
+                    navbar.classList.remove('nav-scrolled');
+                }
+                
+                // 滚动进度条
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById("progressBar").style.width = scrolled + "%";
+                
+                // 滚动显示动画
+                revealElements();
+            });
+            
+            // 移动端菜单切换
+            document.getElementById('menu-toggle').addEventListener('click', function() {
+                const mobileMenu = document.getElementById('mobile-menu');
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // 初始化显示动画
+            revealElements();
+            
+            // 主标签切换
+            const mainTabs = document.querySelectorAll('.interface-tab');
+            mainTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有主标签的active类
+                    mainTabs.forEach(t => t.classList.remove('active'));
+                    // 给当前点击的主标签添加active类
+                    this.classList.add('active');
+                    
+                    // 隐藏所有主内容
+                    document.querySelectorAll('[id$="-content"]').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // 显示对应的主内容
+                    const contentId = this.id.replace('-tab', '-content');
+                    document.getElementById(contentId).classList.remove('hidden');
+                });
+            });
+            
+            // 参数优化子标签切换
+            const subTabs = document.querySelectorAll('.sub-tab');
+            subTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 检查是否是参数优化相关的子标签且用户未登录
+                    if ((this.id === 'optimize-main' || this.id === 'report-generate' || this.id === 'history-records') && !isUserLoggedIn()) {
+                        // 显示登录模态框
+                        document.getElementById('auth-modal').classList.add('active');
+                        return;
+                    }
+                    
+                    // 移除所有子标签的active类
+                    subTabs.forEach(t => t.classList.remove('active'));
+                    // 给当前点击的子标签添加active类
+                    this.classList.add('active');
+                    
+                    // 隐藏所有子内容
+                    document.querySelectorAll('[id$="-main-content"], [id$="-generate-content"], [id$="-records-content"]').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // 显示对应的子内容
+                    const contentId = this.id + '-content';
+                    document.getElementById(contentId).classList.remove('hidden');
+                });
+            });
+            
+            // 执行优化按钮点击事件 - 检查登录状态
+            document.getElementById('optimize-btn').addEventListener('click', function() {
+                if (!isUserLoggedIn()) {
+                    document.getElementById('auth-modal').classList.add('active');
+                    return;
+                }
+                
+                // 如果已登录，执行优化操作
+                alert('正在执行参数优化，请稍候...');
+                // 这里可以添加实际的优化处理逻辑
+            });
+            
+            // 登录按钮点击事件
+            document.getElementById('login-btn').addEventListener('click', function() {
+                // 模拟登录成功
+                setUserLoggedIn(true);
+                document.getElementById('auth-modal').classList.remove('active');
+                alert('登录成功！');
+            });
+            
+            // 点击模态框外部关闭
+            document.getElementById('auth-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+            
+            // 检查用户是否登录 (模拟)
+            function isUserLoggedIn() {
+                return localStorage.getItem('isLoggedIn') === 'true';
+            }
+            
+            // 设置用户登录状态 (模拟)
+            function setUserLoggedIn(status) {
+                localStorage.setItem('isLoggedIn', status);
+            }
+        });
+        
+        // 滚动显示元素动画
+        function revealElements() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('visible');
+                }
+            }
+        }
+    </script>
+
+
+    </body></html>

@@ -1,0 +1,810 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我们 - 徐州文雀科技有限公司</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F62FE',
+                        secondary: '#25C2A0',
+                        accent: '#FF6B00',
+                        dark: '#0A1128',
+                        light: '#F8FAFC',
+                        'tech-gray': '#E2E8F0',
+                        'tech-blue': '#023373',
+                        success: '#10B981',
+                        error: '#EF4444'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'bounce-subtle': 'bounce-subtle 1s ease-in-out'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(15, 98, 254, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(15, 98, 254, 0.8)' }
+                        },
+                        'bounce-subtle': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 10px rgba(15, 98, 254, 0.2);
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+            }
+            .grid-bg {
+                background-size: 40px 40px;
+                background-image: 
+                    linear-gradient(to right, rgba(15, 98, 254, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(15, 98, 254, 0.05) 1px, transparent 1px);
+            }
+            .clip-path-slant {
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            }
+            .backdrop-blur-xl {
+                backdrop-filter: blur(24px);
+            }
+            .perspective {
+                perspective: 1000px;
+            }
+            .preserve-3d {
+                transform-style: preserve-3d;
+            }
+            .rotate-y-hover:hover {
+                transform: rotateY(5deg);
+            }
+            .form-focus-ring {
+                @apply ring-2 ring-primary/20 ring-offset-1;
+            }
+            .shake {
+                animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            }
+            @keyframes shake {
+                10%, 90% { transform: translateX(-1px); }
+                20%, 80% { transform: translateX(2px); }
+                30%, 50%, 70% { transform: translateX(-3px); }
+                40%, 60% { transform: translateX(3px); }
+            }
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* 导航栏滚动效果 */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+        
+        /* 滚动进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: linear-gradient(to right, #0F62FE, #25C2A0);
+            width: 0%;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0A1128;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .loader-logo {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .loader-logo::before, .loader-logo::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .loader-logo::before {
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 98, 254, 0.2);
+            animation-delay: 0s;
+        }
+        
+        .loader-logo::after {
+            width: 70%;
+            height: 70%;
+            background: rgba(37, 194, 160, 0.3);
+            animation-delay: 0.5s;
+            top: 15%;
+            left: 15%;
+        }
+        
+        .loader-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 30%;
+            left: 30%;
+            color: white;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 数据统计动画 */
+        .stat-number {
+            transition: all 2s ease-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .stat-number.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 卡片悬浮效果 */
+        .card-3d {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(15, 98, 254, 0.1), 0 10px 10px -5px rgba(15, 98, 254, 0.04);
+        }
+        
+        /* 图片悬停放大效果 */
+        .img-zoom {
+            overflow: hidden;
+        }
+        
+        .img-zoom img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .img-zoom:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* 滚动动画元素 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 科技感装饰元素 */
+        .tech-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(15, 98, 254, 0.1);
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .tech-line {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(15, 98, 254, 0) 0%, rgba(15, 98, 254, 0.2) 50%, rgba(15, 98, 254, 0) 100%);
+            transform-origin: left center;
+        }
+
+        /* 科技感logo样式 */
+        .logo-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* 表单元素样式 */
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: #0F62FE;
+            box-shadow: 0 0 0 3px rgba(15, 98, 254, 0.1);
+        }
+        
+        /* 表单反馈动画 */
+        .form-message {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .form-message.visible {
+            max-height: 100px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-roboto text-dark bg-light overflow-x-hidden">
+    <!-- 滚动进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <!-- 页面加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">
+            <div class="loader-icon">
+                <!-- 科技感几何logo -->
+                <svg class="logo-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center group">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mr-3 group-hover:animate-glow transition-all duration-300">
+                            <!-- 科技感几何logo -->
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient group-hover:opacity-90 transition-opacity">文雀科技</span>
+                    </a>
+                </div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">首页</a>
+                    <a href="solutions (13).html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">解决方案</a>
+                    <a href="product-use.html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">在线使用</a>
+                    <a href="contact (2).html" class="text-primary font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-primary">联系我们</a>
+                </nav>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-dark hover:text-primary focus:outline-none transition-colors">
+                        <i class="fa fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-tech-gray/20 shadow-lg">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">首页</a>
+                <a href="solutions (13).html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">解决方案</a>
+                <a href="product-use.html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">在线使用</a>
+                <a href="contact (2).html" class="block py-3 text-primary font-medium">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="pt-20">
+        <!-- 页面标题 -->
+        <section class="relative py-24 overflow-hidden bg-gradient-to-br from-dark to-tech-blue clip-path-slant">
+            <!-- 粒子背景容器 -->
+            <div id="particles-js"></div>
+            
+            <!-- 装饰元素 -->
+            <div class="tech-dot w-64 h-64 top-1/4 -left-32"></div>
+            <div class="tech-dot w-32 h-32 bottom-1/4 right-1/4" style="animation-delay: 2s;"></div>
+            <div class="tech-dot w-16 h-16 top-1/2 right-1/3" style="animation-delay: 4s;"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-6 text-white text-shadow reveal">
+                    联系我们
+                </h1>
+                <p class="text-white/80 max-w-2xl mx-auto text-lg md:text-xl mb-10 reveal" style="transition-delay: 150ms;">
+                    无论您有任何疑问或需求，我们都将为您提供专业、及时的服务与支持
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="transition-delay: 300ms;">
+                    <a href="#contact-form" class="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-medium transition-all shadow-lg hover:shadow-primary/30 hover:-translate-y-1">
+                        立即联系 <i class="fa fa-arrow-down ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 波浪分隔符 -->
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[60px]">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="#F8FAFC"></path>
+                </svg>
+            </div>
+        </section>
+        
+        <!-- 联系信息区域 -->
+        <section id="contact-info" class="py-20 grid-bg relative">
+            <!-- 装饰线条 -->
+            <div class="tech-line w-64 h-1 top-1/4 left-1/4" style="transform: rotate(45deg);"></div>
+            <div class="tech-line w-96 h-1 bottom-1/3 right-1/4" style="transform: rotate(-30deg);"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="inline-block text-primary font-semibold mb-3 tracking-wider uppercase text-sm">联系方式</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 bg-gradient-to-r from-dark to-tech-blue text-gradient">与我们取得联系</h2>
+                    <p class="text-dark/70">我们期待听到您的声音，无论是咨询、合作还是反馈，我们都将尽快回复</p>
+                </div>
+                
+                <!-- 联系表单（添加了底色背景） -->
+                <div class="max-w-3xl mx-auto mb-16 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 md:p-10">
+                    <div class="reveal">
+                        <span class="inline-block text-primary font-semibold mb-3 tracking-wider uppercase text-sm">发送消息</span>
+                        <h3 class="text-[clamp(1.2rem,2vw,1.8rem)] font-bold mb-6 bg-gradient-to-r from-dark to-tech-blue text-gradient">填写表单与我们联系</h3>
+                        
+                        <!-- 表单状态提示 -->
+                        <div id="form-status" class="mb-6 p-4 rounded-lg hidden">
+                            <div class="flex items-start">
+                                <div id="status-icon" class="mr-3 mt-0.5"></div>
+                                <div>
+                                    <h4 id="status-title" class="font-medium"></h4>
+                                    <p id="status-message" class="text-sm mt-1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block text-dark/80 mb-2 font-medium">您的姓名 <span class="text-error">*</span></label>
+                                    <input type="text" id="name" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none" placeholder="请输入您的姓名" required="">
+                                    <p class="form-message text-error text-sm mt-1"></p>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-dark/80 mb-2 font-medium">电子邮箱 <span class="text-error">*</span></label>
+                                    <input type="email" id="email" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none" placeholder="请输入您的邮箱" required="">
+                                    <p class="form-message text-error text-sm mt-1"></p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="company" class="block text-dark/80 mb-2 font-medium">公司名称 <span class="text-error">*</span></label>
+                                <input type="text" id="company" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none" placeholder="请输入您的公司名称" required="">
+                            </div>
+                            
+                            <div>
+                                <label for="position" class="block text-dark/80 mb-2 font-medium">您在公司的职位 <span class="text-error">*</span></label>
+                                <input type="text" id="position" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none" placeholder="例如：总经理、技术总监、采购经理等" required="">
+                                <p class="text-dark/50 text-sm mt-1">请填写您在公司担任的具体职位，以便我们更好地为您服务</p>
+                            </div>
+                            
+                            <div>
+                                <label for="phone" class="block text-dark/80 mb-2 font-medium">联系电话</label>
+                                <input type="tel" id="phone" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none" placeholder="请输入您的联系电话">
+                                <p class="form-message text-error text-sm mt-1"></p>
+                            </div>
+                            
+                            <div>
+                                <label for="subject" class="block text-dark/80 mb-2 font-medium">咨询主题 <span class="text-error">*</span></label>
+                                <select id="subject" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none bg-white" required="">
+                                    <option value="" disabled="" selected="">请选择咨询主题</option>
+                                    <option value="product">产品咨询</option>
+                                    <option value="cooperation">商务合作</option>
+                                    <option value="support">技术支持</option>
+                                    <option value="partnership">渠道合作</option>
+                                    <option value="other">其他问题</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="message" class="block text-dark/80 mb-2 font-medium">您的留言 <span class="text-error">*</span></label>
+                                <textarea id="message" rows="5" class="form-input w-full px-4 py-3 rounded-lg border border-tech-gray focus:outline-none resize-none" placeholder="请详细描述您的需求或问题..." required=""></textarea>
+                                <p class="form-message text-error text-sm mt-1"></p>
+                                <p class="text-dark/50 text-sm mt-1"><span id="char-count">0</span>/500 字符</p>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input id="privacy-policy" type="checkbox" class="w-4 h-4 border border-tech-gray rounded focus:ring-primary focus:ring-2 focus:ring-opacity-50" required="">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="privacy-policy" class="text-dark/70">我已阅读并同意<a href="#" class="text-primary hover:underline">隐私政策</a>，并允许文雀科技根据隐私政策处理我的个人信息。 <span class="text-error">*</span></label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" id="submit-btn" class="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-medium transition-all shadow-lg hover:shadow-primary/30 hover:-translate-y-1">
+                                <span id="btn-text">发送消息</span>
+                                <i class="fa fa-paper-plane ml-2"></i>
+                                <div id="loading-indicator" class="ml-2 hidden">
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- 联系方式卡片 -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- 地址 -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 text-center card-3d reveal">
+                        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6 mx-auto">
+                            <i class="fa fa-map-marker text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">公司地址</h3>
+                        <p class="text-dark/70">江苏省徐州市高新技术产业开发区<br></p>
+                    </div>
+                    
+                    <!-- 电话 -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 text-center card-3d reveal" style="transition-delay: 150ms;">
+                        <div class="w-16 h-16 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mb-6 mx-auto">
+                            <i class="fa fa-phone text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">联系电话</h3>
+                        <p class="text-dark/70 mb-2">销售咨询：<a href="tel:17834666572" class="text-primary hover:underline">17834666572</a></p>
+                        <p class="text-dark/70">技术支持：<a href="tel:17834666573" class="text-primary hover:underline">13210599227</a></p>
+                        <p class="text-dark/70 mt-2">工作时间：周一至周五 9:00-18:00</p>
+                    </div>
+                    
+                    <!-- 邮箱 -->
+                    <div class="bg-white rounded-xl shadow-lg p-8 text-center card-3d reveal" style="transition-delay: 300ms;">
+                        <div class="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent mb-6 mx-auto">
+                            <i class="fa fa-envelope text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">电子邮箱</h3>
+                        <p class="text-dark/70 mb-2">销售咨询：<a href="mailto:sales@wenquetech.com" class="text-primary hover:underline">18405314912@163.com</a></p>
+                        <p class="text-dark/70 mb-2">技术支持：<a href="mailto:support@wenquetech.com" class="text-primary hover:underline">wenquetech@163.com</a></p>
+                        <p class="text-dark/70">公司总机：<a href="mailto:wenquetech@163.com" class="text-primary hover:underline">wenquetech@163.com</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mr-3">
+                            <!-- 科技感几何logo -->
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold">文雀科技</span>
+                    </div>
+                    <p class="text-white/70 mb-6">专注于为制造企业提供NC程序验证与优化解决方案，助力企业提升生产效率，降低制造成本。</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-white/70 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="company.html" class="text-white/70 hover:text-white transition-colors">公司介绍</a></li>
+                        <li><a href="products.html" class="text-white/70 hover:text-white transition-colors">产品介绍</a></li>
+                        <li><a href="solutions.html" class="text-white/70 hover:text-white transition-colors">解决方案</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">联系信息</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">江苏省徐州市高新技术产业开发区</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-phone text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">17834666572</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-envelope text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">wenquetech@163.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">订阅资讯</h4>
+                    <p class="text-white/70 mb-4">订阅我们的技术资讯，获取最新行业动态和解决方案。</p>
+                    <form class="flex">
+                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark" required="">
+                        <button type="submit" class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 text-center text-white/50 text-sm">
+                <p>© 2025 徐州文雀科技有限公司 版权所有 | 技术研发始于1998年</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 粒子背景初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.2,
+                        "random": true
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#0F62FE",
+                        "opacity": 0.1,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.3
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 3
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+       
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+            
+            // 滚动进度条
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+            
+            // 滚动显示动画
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('visible');
+                }
+            }
+            
+            // 数字统计动画
+            const stats = document.querySelectorAll('.stat-number');
+            for (let i = 0; i < stats.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = stats[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible && !stats[i].classList.contains('counted')) {
+                    stats[i].classList.add('visible', 'counted');
+                    animateValue(stats[i], 0, parseInt(stats[i].innerText), 2000);
+                }
+            }
+        });
+        
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    // 触发一次滚动检查以显示初始元素
+                    window.dispatchEvent(new Event('scroll'));
+                }, 800);
+            }, 1000);
+        });
+        
+        // 数字增长动画
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // 服务流程滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检测元素是否在视口中
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+                    rect.bottom >= 0
+                );
+            }
+
+            // 处理滚动动画
+            function handleScrollAnimation() {
+                const timelineItems = document.querySelectorAll('.timeline-content');
+                
+                timelineItems.forEach(item => {
+                    if (isInViewport(item) && !item.classList.contains('animate-in')) {
+                        item.classList.add('animate-in', 'opacity-100', 'translate-y-0');
+                        item.classList.remove('opacity-0', 'translate-y-4');
+                    }
+                });
+            }
+
+            // 初始化元素状态
+            document.querySelectorAll('.timeline-content').forEach(item => {
+                item.classList.add('opacity-0', 'translate-y-4');
+            });
+
+            // 监听滚动事件
+            window.addEventListener('scroll', handleScrollAnimation);
+            
+            // 初始检查
+            handleScrollAnimation();
+
+            // 步骤点交互效果
+            const dots = document.querySelectorAll('.timeline-dot');
+            dots.forEach(dot => {
+                dot.addEventListener('mouseenter', function() {
+                    const step = this.getAttribute('data-step');
+                    document.querySelectorAll(`[data-step="${step}"]`).forEach(el => {
+                        el.classList.add('bg-secondary');
+                    });
+                });
+                
+                dot.addEventListener('mouseleave', function() {
+                    const step = this.getAttribute('data-step');
+                    document.querySelectorAll(`[data-step="${step}"]`).forEach(el => {
+                        el.classList.remove('bg-secondary');
+                    });
+                });
+            });
+        });
+    </script>
+</body></html>
+   

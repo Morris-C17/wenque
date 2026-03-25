@@ -1,0 +1,1426 @@
+<html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>解决方案 - 徐州文雀科技有限公司</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F62FE',
+                        secondary: '#25C2A0',
+                        accent: '#FF6B00',
+                        dark: '#0A1128',
+                        light: '#F8FAFC',
+                        'tech-gray': '#E2E8F0',
+                        'tech-blue': '#023373'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'shine': 'shine 3s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(15, 98, 254, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(15, 98, 254, 0.8)' }
+                        },
+                        shine: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(37, 194, 160, 0.3)' },
+                            '50%': { boxShadow: '0 0 25px rgba(37, 194, 160, 0.6)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 10px rgba(15, 98, 254, 0.2);
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+            }
+            .grid-bg {
+                background-size: 40px 40px;
+                background-image: 
+                    linear-gradient(to right, rgba(15, 98, 254, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(15, 98, 254, 0.05) 1px, transparent 1px);
+            }
+            .clip-path-slant {
+                clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            }
+            .backdrop-blur-xl {
+                backdrop-filter: blur(24px);
+            }
+            .perspective {
+                perspective: 1000px;
+            }
+            .preserve-3d {
+                transform-style: preserve-3d;
+            }
+            .rotate-y-hover:hover {
+                transform: rotateY(5deg);
+            }
+            .card-border {
+                border: 1px solid rgba(15, 98, 254, 0.1);
+            }
+            .hover-scale {
+                transition: transform 0.5s ease;
+            }
+            .hover-scale:hover {
+                transform: scale(1.03);
+            }
+            /* 新增磨砂玻璃效果类 */
+            .frosted-glass {
+                background: rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+            }
+        }
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* 导航栏滚动效果 */
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+        
+        /* 滚动进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+        }
+        
+        .progress-bar {
+            height: 3px;
+            background: linear-gradient(to right, #0F62FE, #25C2A0);
+            width: 0%;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0A1128;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .loader-logo {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .loader-logo::before, .loader-logo::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .loader-logo::before {
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 98, 254, 0.2);
+            animation-delay: 0s;
+        }
+        
+        .loader-logo::after {
+            width: 70%;
+            height: 70%;
+            background: rgba(37, 194, 160, 0.3);
+            animation-delay: 0.5s;
+            top: 15%;
+            left: 15%;
+        }
+        
+        .loader-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 30%;
+            left: 30%;
+            color: white;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 数据统计动画 */
+        .stat-number {
+            transition: all 2s ease-out;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .stat-number.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 卡片悬浮效果 */
+        .card-3d {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(15, 98, 254, 0.1), 0 10px 10px -5px rgba(15, 98, 254, 0.04);
+        }
+        
+        /* 图片悬停放大效果 */
+        .img-zoom {
+            overflow: hidden;
+        }
+        
+        .img-zoom img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .img-zoom:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* 滚动动画元素 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 科技感装饰元素 */
+        .tech-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(15, 98, 254, 0.1);
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .tech-line {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(15, 98, 254, 0) 0%, rgba(15, 98, 254, 0.2) 50%, rgba(15, 98, 254, 0) 100%);
+            transform-origin: left center;
+        }
+
+        /* 科技感logo样式 */
+        .logo-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+
+        /* 服务流程时间线样式 */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #E2E8F0;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 120px;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: #0F62FE;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transform: translateX(-50%);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(15, 98, 254, 0.1);
+        }
+        
+        .animate-in {
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* 新增右侧卡片装饰元素样式 */
+        .image-card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 26px;
+            background: linear-gradient(45deg, rgba(15, 98, 254, 0.1), rgba(37, 194, 160, 0.1));
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="font-roboto text-dark bg-light overflow-x-hidden">
+    <!-- 滚动进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <!-- 页面加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">
+            <div class="loader-icon">
+                <!-- 科技感几何logo -->
+                <svg class="logo-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center group">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mr-3 group-hover:animate-glow transition-all duration-300">
+                            <!-- 科技感几何logo -->
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient group-hover:opacity-90 transition-opacity">文雀科技</span>
+                    </a>
+                </div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">首页</a>
+                    <a href="solutions (13).html" class="text-primary font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-primary">解决方案</a>
+                    <a href="product-use.html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">在线使用</a>
+                    <a href="contact (2).html" class="text-dark/80 font-medium hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-primary after:transition-all hover:after:w-full">联系我们</a>
+                </nav>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-dark hover:text-primary focus:outline-none transition-colors">
+                        <i class="fa fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-tech-gray/20 shadow-lg">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">首页</a>
+                <a href="solutions (13).html" class="block py-3 text-primary font-medium">解决方案</a>
+                <a href="product-use.html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">在线使用</a>
+                <a href="contact (2).html" class="block py-3 text-dark/80 font-medium hover:text-primary transition-colors">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="pt-20">
+        <!-- 页面标题 -->
+        <section class="relative py-24 overflow-hidden bg-gradient-to-br from-dark to-tech-blue clip-path-slant">
+            <!-- 粒子背景容器 -->
+            <div id="particles-js"></div>
+            
+            <!-- 装饰元素 -->
+            <div class="tech-dot w-64 h-64 top-1/4 -left-32"></div>
+            <div class="tech-dot w-32 h-32 bottom-1/4 right-1/4" style="animation-delay: 2s;"></div>
+            <div class="tech-dot w-16 h-16 top-1/2 right-1/3" style="animation-delay: 4s;"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-6 text-white text-shadow reveal">
+                    智能制造解决方案
+                </h1>
+                <p class="text-white/80 max-w-2xl mx-auto text-lg md:text-xl mb-10 reveal" style="transition-delay: 150ms;">
+                    为制造企业提供全方位的数控加工智能化解决方案，提升生产效率，降低制造成本
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 reveal" style="transition-delay: 300ms;">
+                    <a href="#solutions" class="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-lg font-medium transition-all shadow-lg hover:shadow-primary/30 hover:-translate-y-1">
+                        探索解决方案 <i class="fa fa-arrow-down ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 波浪分隔符 -->
+            <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] rotate-180">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[60px]">
+                    <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="#F8FAFC"></path>
+                </svg>
+            </div>
+        </section>
+        
+        <!-- 解决方案概述 -->
+        <section id="solutions" class="py-20 grid-bg relative">
+            <!-- 装饰线条 -->
+            <div class="tech-line w-64 h-1 top-1/4 left-1/4" style="transform: rotate(45deg);"></div>
+            <div class="tech-line w-96 h-1 bottom-1/3 right-1/4" style="transform: rotate(-30deg);"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <div class="reveal visible">
+                        <span class="inline-block text-primary font-semibold mb-3 tracking-wider uppercase text-sm">解决方案</span>
+                        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-6 bg-gradient-to-r from-dark to-tech-blue text-gradient">全方位优化智能制造解决方案</h2>
+                        <p class="text-dark/80 mb-6 text-lg leading-relaxed">
+                            文雀科技提供从NC程序验证、加工过程仿真到生产数据分析的全流程解决方案，帮助制造企业实现数字化转型，提升核心竞争力。
+                        </p>
+                        <p class="text-dark/80 mb-8 text-lg leading-relaxed">
+                            我们的解决方案不仅能有效避免加工错误、减少材料浪费，还能优化加工参数，提高设备利用率，降低生产成本，缩短产品交付周期。
+                        </p>
+                        
+                        <!-- 解决方案优势 -->
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">加工效率提升19%</h4>
+                                    <p class="text-dark/70 text-sm">通过智能优化算法，显著提高加工效率</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">加工错误率降低99.9%</h4>
+                                    <p class="text-dark/70 text-sm">提前模拟验证，有效避免碰撞和过切</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-1 mr-4 flex-shrink-0">
+                                    <i class="fa fa-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">生产成本降低20-40%</h4>
+                                    <p class="text-dark/70 text-sm">减少材料浪费，优化刀具使用，降低能耗</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧区域改为磨砂玻璃效果 -->
+                    <div class="perspective reveal visible relative" style="transition-delay: 200ms;">
+                        <div class="relative rotate-y-hover preserve-3d image-card">
+                            <!-- 磨砂玻璃效果容器 -->
+                            <div class="img-zoom rounded-2xl overflow-hidden shadow-2xl hover-scale frosted-glass">
+                                <!-- 背景图片 -->
+                                <img src="https://tse3.mm.bing.net/th/id/OIP.uoG8s4W_pHtpJNy-mBV6WgHaFj?rs=1&amp;pid=ImgDetMain&amp;o=7&amp;rm=3" alt=" " class="w-full h-auto opacity-60">
+                                
+                                <!-- 磨砂玻璃上的内容叠加层 -->
+                                <div class="absolute inset-0 flex items-center justify-center p-8">
+                                    <div class="text-center">
+                                        <div class="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center mb-4">
+                                            <i class="fa fa-cogs text-2xl text-primary"></i>
+                                        </div>
+                                        <h3 class="text-2xl font-bold text-dark mb-2">智能制造解决方案</h3>
+                                        <p class="text-dark/80 max-w-md mx-auto">
+                                            整合NC程序验证、加工仿真与数据分析，打造全方位智能制造体系
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 左下角卡片 -->
+                            <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl max-w-[200px] animate-float card-border">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-2 h-2 rounded-full bg-secondary mr-2"></div>
+                                    <span class="text-sm font-medium">NC程序验证及优化技术</span>
+                                </div>
+                                <p class="text-dark/70 text-xs">程序检验及对机加工程序进行变速处理</p>
+                            </div>
+                            
+                            <!-- 右上角卡片 -->
+                            <div class="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-xl max-w-[160px] animate-float animate-shine" style="animation-delay: 2s;" card-border="">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-2 h-2 rounded-full bg-accent mr-2"></div>
+                                    <span class="text-sm font-medium">投资回报快</span>
+                                </div>
+                                <p class="text-dark/70 text-xs">平均6-12个月收回投资成本</p>
+                            </div>
+                            
+                            <!-- 装饰元素 -->
+                            <div class="absolute -z-10 w-24 h-24 bg-primary/5 rounded-full top-1/4 right-1/4 blur-xl"></div>
+                            <div class="absolute -z-10 w-32 h-32 bg-secondary/5 rounded-full bottom-1/3 left-1/4 blur-xl"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 产品介绍 (重新布局的核心产品模块) -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="inline-block text-primary font-semibold mb-3 tracking-wider uppercase text-sm">核心产品</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 bg-gradient-to-r from-dark to-tech-blue text-gradient">支撑解决方案的关键产品</h2>
+                    <p class="text-dark/70">我们的产品组合为智能制造提供全方位技术支持</p>
+                </div>
+                
+                <!-- 重新布局的产品展示区 -->
+                <div class="grid md:grid-cols-2 gap-10 lg:gap-12">
+                    <!-- 产品1 -->
+                    <div class="group bg-white rounded-2xl shadow-xl overflow-hidden card-3d reveal">
+                        <div class="relative h-64 overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent z-10"></div>
+                            <img src="https://th.bing.com/th/id/R.cc25090b37e1f747955145a95b97a6c2?rik=OvwdliFbQxY%2fjQ&riu=http%3a%2f%2fimg.558idc.com%2fuploadfile%2fallimg%2fcentos%2f23164415_6304935f0600841416.png&ehk=Ekt1SmWsNb84YEtMwdD3eMRsrHI1FfwHvil6n3hzmRg%3d&risl=&pid=ImgRaw&r=0" alt="NC程序智能验证系统" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute top-4 right-4 z-20">
+                                <span class="bg-primary/90 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">核心产品</span>
+                            </div>
+                            <div class="absolute bottom-6 left-6 z-20">
+                                <h3 class="text-2xl font-bold text-white mb-2">NC程序智能验证系统</h3>
+                                <p class="text-white/90 max-w-md">基于三维仿真技术，对NC程序进行全面验证，提前发现加工问题</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-tech-gray/30 p-4 rounded-lg">
+                                    <div class="text-primary font-bold text-xl mb-1">99.9%</div>
+                                    <div class="text-dark/70 text-sm">碰撞检测准确率</div>
+                                </div>
+                                <div class="bg-tech-gray/30 p-4 rounded-lg">
+                                    <div class="text-primary font-bold text-xl mb-1">30+</div>
+                                    <div class="text-dark/70 text-sm">支持数控系统</div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-semibold mb-3 text-lg">核心功能</h4>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mt-0.5 mr-3 flex-shrink-0">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-dark/80">加工过程动态三维模拟</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mt-0.5 mr-3 flex-shrink-0">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-dark/80">自动碰撞与过切检测</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mt-0.5 mr-3 flex-shrink-0">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-dark/80">刀具路径优化建议</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors group">
+                                <span>申请试用</span>
+                                <i class="fa fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 产品2 -->
+                    <div class="group bg-white rounded-2xl shadow-xl overflow-hidden card-3d reveal" style="transition-delay: 150ms;">
+                        <div class="relative h-64 overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent z-10"></div>
+                            <img src="https://admin.sovitjs.com/restapi/sovit/Rest/files/free/image/f78c4c86-7f88-455c-94b1-7b301fbda61b" alt="加工参数优化系统" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute top-4 right-4 z-20">
+                                <span class="bg-secondary/90 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">高效工具</span>
+                            </div>
+                            <div class="absolute bottom-6 left-6 z-20">
+                                <h3 class="text-2xl font-bold text-white mb-2">加工参数优化系统</h3>
+                                <p class="text-white/90 max-w-md">基于机器学习算法，自动优化切削参数，提高加工效率</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-tech-gray/30 p-4 rounded-lg">
+                                    <div class="text-secondary font-bold text-xl mb-1">19%</div>
+                                    <div class="text-dark/70 text-sm">平均效率提升</div>
+                                </div>
+                                <div class="bg-tech-gray/30 p-4 rounded-lg">
+                                    <div class="text-secondary font-bold text-xl mb-1">25%</div>
+                                    <div class="text-dark/70 text-sm">刀具寿命延长</div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-semibold mb-3 text-lg">核心功能</h4>
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 mr-3 flex-shrink-0">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-dark/80">自适应切削参数调整</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 mr-3 flex-shrink-0">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-dark/80">智能刀具磨损预测</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5 mr-3 flex-shrink-0">
+                                        <i class="fa fa-check text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-dark/80">加工能耗优化分析</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="inline-flex items-center text-primary font-medium hover:text-primary/80 transition-colors group">
+                                <span>在线试用</span>
+                                <i class="fa fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 行业解决方案 -->
+        <section class="py-20 grid-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="inline-block text-primary font-semibold mb-3 tracking-wider uppercase text-sm">行业方案</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4 bg-gradient-to-r from-dark to-tech-blue text-gradient">针对不同行业的定制方案</h2>
+                    <p class="text-dark/70">根据各行业特点，提供量身定制的智能制造解决方案</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- 模具加工解决方案 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-3d reveal">
+                        <div class="md:flex">
+                            <div class="md:w-2/5 img-zoom">
+                                <img src="https://img95.699pic.com/photo/60013/7834.jpg_wh300.jpg!/fh/300/quality/90" alt="模具加工解决方案" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-3/5">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mr-3">
+                                        <i class="fa fa-cogs"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">模具加工解决方案</h3>
+                                </div>
+                                <p class="text-dark/70 mb-4">
+                                    针对模具加工复杂型腔、高精度要求，提供专业的加工策略与参数优化方案，缩短模具开发周期，提高模具质量。
+                                </p>
+                                <h4 class="font-semibold mb-2">核心优势：</h4>
+                                <ul class="text-dark/70 space-y-1 mb-4 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>复杂型腔加工路径优化</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>模具表面质量提升方案</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>电极加工效率优化</span>
+                                    </li>
+                                </ul>
+                                <a href="#" class="text-primary font-medium inline-flex items-center hover:underline">
+                                    查看详情 <i class="fa fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 精密机械解决方案 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-3d reveal" style="transition-delay: 150ms;">
+                        <div class="md:flex">
+                            <div class="md:w-2/5 img-zoom">
+                                <img src="https://img95.699pic.com/photo/60021/7061.jpg_wh860.jpg" alt="精密机械解决方案" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-3/5">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-tech-blue/10 flex items-center justify-center text-tech-blue mr-3">
+                                        <i class="fa fa-microchip"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">精密机械解决方案</h3>
+                                </div>
+                                <p class="text-dark/70 mb-4">
+                                    针对精密机械零件的微米级加工要求，提供高精度加工验证与质量控制方案，确保产品精度与性能。
+                                </p>
+                                <h4 class="font-semibold mb-2">核心优势：</h4>
+                                <ul class="text-dark/70 space-y-1 mb-4 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>微米级加工精度控制</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>精密测量与加工一体化</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>环境因素补偿方案</span>
+                                    </li>
+                                </ul>
+                                <a href="#" class="text-primary font-medium inline-flex items-center hover:underline">
+                                    查看详情 <i class="fa fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 航空航天解决方案 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-3d reveal" style="transition-delay: 300ms;">
+                        <div class="md:flex">
+                            <div class="md:w-2/5 img-zoom">
+                                <img src="https://waykenrm.cn/wp-content/uploads/2025/04/5-axis-machining-aerospace-parts.jpg" alt="航空航天解决方案" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-3/5">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3">
+                                        <i class="fa fa-rocket"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">航空航天解决方案</h3>
+                                </div>
+                                <p class="text-dark/70 mb-4">
+                                    针对航空航天零部件高精度、复杂结构的加工需求，提供从程序验证到加工过程优化的全流程解决方案，确保产品质量与生产效率。
+                                </p>
+                                <h4 class="font-semibold mb-2">核心优势：</h4>
+                                <ul class="text-dark/70 space-y-1 mb-4 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>满足航空级精度要求的加工验证</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>难加工材料切削参数优化</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>复杂曲面加工质量控制</span>
+                                    </li>
+                                </ul>
+                                <a href="#" class="text-primary font-medium inline-flex items-center hover:underline">
+                                    查看详情 <i class="fa fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 汽车制造解决方案 -->
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden card-3d reveal" style="transition-delay: 450ms;">
+                        <div class="md:flex">
+                            <div class="md:w-2/5 img-zoom">
+                                <img src="https://img95.699pic.com/photo/60037/0810.jpg_wh300.jpg!/fh/300/quality/90";rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1757330174&amp;x-signature=fkQWlXJw7vP9RwgIy9KlbkTZP%2BA%3D" alt="汽车制造解决方案" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 md:w-3/5">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-3">
+                                        <i class="fa fa-car"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold">汽车制造解决方案</h3>
+                                </div>
+                                <p class="text-dark/70 mb-4">
+                                    针对汽车零部件批量生产特点，提供高效的加工过程优化与质量控制方案，提升生产线效率，降低制造成本。
+                                </p>
+                                <h4 class="font-semibold mb-2">核心优势：</h4>
+                                <ul class="text-dark/70 space-y-1 mb-4 text-sm">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>批量零件加工一致性控制</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>生产线设备利用率优化</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-angle-right text-primary mt-1 mr-2"></i>
+                                        <span>多品种小批量柔性生产支持</span>
+                                    </li>
+                                </ul>
+                                <a href="#" class="text-primary font-medium inline-flex items-center hover:underline">
+                                    查看详情 <i class="fa fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 服务流程 -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4 md:px-8">
+                <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center text-dark mb-4">
+                    我们的服务流程
+                </h1>
+                <p class="text-gray-500 text-center mt-4 max-w-2xl mx-auto mb-16">
+                    专业的服务流程确保为您提供定制化解决方案，从需求分析到持续优化，全程保驾护航
+                </p>
+
+                <!-- 时间线容器 -->
+                <div class="relative">
+                    <!-- 中间线 -->
+                    <div class="timeline-line"></div>
+
+                    <!-- 步骤1：需求分析与评估 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" data-step="1">1</div>
+                        
+                        <div class="md:w-5/12 md:pr-8 md:text-right mb-6 md:mb-0 md:float-left timeline-content">
+                            <h2 class="text-xl font-bold text-primary mb-3">需求分析与评估</h2>
+                            <p class="text-gray-600">
+                                深入了解客户生产现状与需求，评估现有设备与工艺水平，制定个性化解决方案。
+                            </p>
+                        </div>
+                        
+                        <div class="md:w-5/12 md:ml-auto md:pl-8 mt-10 md:mt-0 timeline-content">
+                            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                                <div class="flex items-center mb-3">
+                                    <i class="fa fa-search text-primary mr-2"></i>
+                                    <h3 class="font-semibold">包含内容</h3>
+                                </div>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>生产流程调研</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>设备与软件评估</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>目标与效益分析</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="clear-both"></div>
+                    </div>
+
+                    <!-- 步骤2：方案设计与定制 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" data-step="2">2</div>
+                        
+                        <div class="md:w-5/12 md:pr-8 mb-6 md:mb-0 md:float-left timeline-content">
+                            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                                <div class="flex items-center mb-3">
+                                    <i class="fa fa-cogs text-primary mr-2"></i>
+                                    <h3 class="font-semibold">包含内容</h3>
+                                </div>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>硬件配置规划</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>软件定制开发</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>集成方案设计</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="md:w-5/12 md:ml-auto md:pl-8 mt-10 md:mt-0 md:text-left timeline-content">
+                            <h2 class="text-xl font-bold text-primary mb-3">方案设计与定制</h2>
+                            <p class="text-gray-600">
+                                根据需求分析结果，设计详细解决方案，进行必要的软件定制开发，确保满足客户特定需求。
+                            </p>
+                        </div>
+                        
+                        <div class="clear-both"></div>
+                    </div>
+
+                    <!-- 步骤3：系统部署与集成 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" data-step="3">3</div>
+                        
+                        <div class="md:w-5/12 md:pr-8 md:text-right mb-6 md:mb-0 md:float-left timeline-content">
+                            <h2 class="text-xl font-bold text-primary mb-3">系统部署与集成</h2>
+                            <p class="text-gray-600">
+                                进行软硬件安装部署，与客户现有系统集成对接，确保数据流通畅，系统稳定运行。
+                            </p>
+                        </div>
+                        
+                        <div class="md:w-5/12 md:ml-auto md:pl-8 mt-10 md:mt-0 timeline-content">
+                            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                                <div class="flex items-center mb-3">
+                                    <i class="fa fa-server text-primary mr-2"></i>
+                                    <h3 class="font-semibold">包含内容</h3>
+                                </div>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>软硬件安装配置</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>系统集成对接</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>系统调试与优化</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="clear-both"></div>
+                    </div>
+
+                    <!-- 步骤4：运维支持与优化 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" data-step="4">4</div>
+                        
+                        <div class="md:w-5/12 md:pr-8 mb-6 md:mb-0 md:float-left timeline-content">
+                            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                                <div class="flex items-center mb-3">
+                                    <i class="fa fa-life-ring text-primary mr-2"></i>
+                                    <h3 class="font-semibold">包含内容</h3>
+                                </div>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>7x24小时技术支持</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>定期系统健康检查</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                                        <span>持续优化与升级</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="md:w-5/12 md:ml-auto md:pl-8 mt-10 md:mt-0 md:text-left timeline-content">
+                            <h2 class="text-xl font-bold text-primary mb-3">运维支持与优化</h2>
+                            <p class="text-gray-600">
+                                提供持续的技术支持与系统维护，定期进行系统评估与优化，确保解决方案持续创造价值。
+                            </p>
+                        </div>
+                        
+                        <div class="clear-both"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 客户案例数据 -->
+        <section class="py-20 bg-gradient-to-br from-dark to-tech-blue text-white relative overflow-hidden">
+            <div class="tech-dot w-64 h-64 top-1/4 right-1/4 opacity-20"></div>
+            <div class="tech-dot w-32 h-32 bottom-1/3 left-1/4 opacity-20" style="animation-delay: 3s;"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <span class="inline-block text-secondary font-semibold mb-3 tracking-wider uppercase text-sm">客户价值</span>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">解决方案带来的实际效益</h2>
+                    <p class="text-white/70">基于300+客户实施案例的数据分析</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white/5 backdrop-blur-xl rounded-xl p-6 shadow-lg reveal">
+                        <h3 class="text-xl font-semibold mb-4">实施前后关键指标对比</h3>
+                        <div class="h-80">
+                            <canvas id="solutionComparisonChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white/5 backdrop-blur-xl rounded-xl p-6 shadow-lg reveal" style="transition-delay: 200ms;">
+                        <h3 class="text-xl font-semibold mb-4">客户投资回报分析</h3>
+                        <div class="h-80">
+                            <canvas id="roiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white mr-3">
+                            <!-- 科技感几何logo -->
+                            <svg class="logo-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold">文雀科技</span>
+                    </div>
+                    <p class="text-white/70 mb-6">专注于为制造企业提供NC程序验证与优化解决方案，助力企业提升生产效率，降低制造成本。</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-white/70 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="company.html" class="text-white/70 hover:text-white transition-colors">公司介绍</a></li>
+                        <li><a href="products.html" class="text-white/70 hover:text-white transition-colors">产品介绍</a></li>
+                        <li><a href="solutions.html" class="text-white/70 hover:text-white transition-colors">解决方案</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">联系信息</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">江苏省徐州市高新技术产业开发区</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-phone text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">17834666572</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-envelope text-primary mt-1 mr-3"></i>
+                            <span class="text-white/70">wenquetech@163.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">订阅资讯</h4>
+                    <p class="text-white/70 mb-4">订阅我们的技术资讯，获取最新行业动态和解决方案。</p>
+                    <form class="flex">
+                        <input type="email" placeholder="您的邮箱地址" class="px-4 py-2 rounded-l-lg w-full focus:outline-none text-dark" required="">
+                        <button type="submit" class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 text-center text-white/50 text-sm">
+                <p>© 2025 徐州文雀科技有限公司 版权所有 | 技术研发始于1998年</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 粒子背景初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.2,
+                        "random": true
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#0F62FE",
+                        "opacity": 0.1,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.3
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 3
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+        
+        // 解决方案对比图表
+        const solutionComparisonCtx = document.getElementById('solutionComparisonChart').getContext('2d');
+        new Chart(solutionComparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: ['加工效率', '加工错误率', '材料利用率', '设备利用率', '生产周期'],
+                datasets: [
+                    {
+                        label: '实施前',
+                        data: [100, 100, 100, 100, 100],
+                        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                        borderColor: 'rgba(255, 255, 255, 0.7)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '实施后',
+                        data: [135, 15, 125, 120, 65],
+                        backgroundColor: 'rgba(37, 194, 160, 0.7)',
+                        borderColor: 'rgba(37, 194, 160, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.9)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 投资回报分析图表
+        const roiCtx = document.getElementById('roiChart').getContext('2d');
+        new Chart(roiCtx, {
+            type: 'line',
+            data: {
+                labels: ['实施月', '3个月', '6个月', '9个月', '12个月', '15个月', '18个月'],
+                datasets: [
+                    {
+                        label: '累计投资',
+                        data: [100, 105, 110, 115, 120, 125, 130],
+                        borderColor: 'rgba(255, 107, 0, 0.8)',
+                        backgroundColor: 'rgba(255, 107, 0, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '累计收益',
+                        data: [0, 30, 80, 130, 190, 250, 320],
+                        borderColor: 'rgba(37, 194, 160, 0.8)',
+                        backgroundColor: 'rgba(37, 194, 160, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.9)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+            
+            // 滚动进度条
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+            
+            // 滚动显示动画
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('visible');
+                }
+            }
+            
+            // 数字统计动画
+            const stats = document.querySelectorAll('.stat-number');
+            for (let i = 0; i < stats.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = stats[i].getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible && !stats[i].classList.contains('counted')) {
+                    stats[i].classList.add('visible', 'counted');
+                    animateValue(stats[i], 0, parseInt(stats[i].innerText), 2000);
+                }
+            }
+        });
+        
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    // 触发一次滚动检查以显示初始元素
+                    window.dispatchEvent(new Event('scroll'));
+                }, 800);
+            }, 1000);
+        });
+        
+        // 数字增长动画
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // 服务流程滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检测元素是否在视口中
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+                    rect.bottom >= 0
+                );
+            }
+
+            // 处理滚动动画
+            function handleScrollAnimation() {
+                const timelineItems = document.querySelectorAll('.timeline-content');
+                
+                timelineItems.forEach(item => {
+                    if (isInViewport(item) && !item.classList.contains('animate-in')) {
+                        item.classList.add('animate-in', 'opacity-100', 'translate-y-0');
+                        item.classList.remove('opacity-0', 'translate-y-4');
+                    }
+                });
+            }
+
+            // 初始化元素状态
+            document.querySelectorAll('.timeline-content').forEach(item => {
+                item.classList.add('opacity-0', 'translate-y-4');
+            });
+
+            // 监听滚动事件
+            window.addEventListener('scroll', handleScrollAnimation);
+            
+            // 初始检查
+            handleScrollAnimation();
+
+            // 步骤点交互效果
+            const dots = document.querySelectorAll('.timeline-dot');
+            dots.forEach(dot => {
+                dot.addEventListener('mouseenter', function() {
+                    const step = this.getAttribute('data-step');
+                    document.querySelectorAll(`[data-step="${step}"]`).forEach(el => {
+                        el.classList.add('bg-secondary');
+                    });
+                });
+                
+                dot.addEventListener('mouseleave', function() {
+                    const step = this.getAttribute('data-step');
+                    document.querySelectorAll(`[data-step="${step}"]`).forEach(el => {
+                        el.classList.remove('bg-secondary');
+                    });
+                });
+            });
+        });
+    </script>
+
+    </body></html>
